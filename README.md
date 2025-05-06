@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# primary-uniforms
-A visual collection of uniforms from primary schools across Singapore
-=======
 # Singapore Primary School Uniforms
 
 A visual collection of uniforms from primary schools across Singapore.
@@ -24,4 +20,3 @@ You can browse the collection by visiting [sg-school.github.io/primary-uniforms]
 ## Credits
 
 All images are linked to their original sources.
->>>>>>> f77a0c3 (Add README)
