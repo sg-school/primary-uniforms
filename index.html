@@ -1843,6 +1843,10 @@
     
     <footer>
         <p>&copy; 2025 Singapore School Uniforms Collection</p>
+        <p>Source code: <a href="https://github.com/sg-school/primary-uniforms" target="_blank">GitHub</a> | Contact: <a href="mailto:best.yichao@gmail.com">best.yichao@gmail.com</a></p>
+        <div class="visitor-counter">
+            <p>Visitors: <span id="visits">0</span></p>
+        </div>
     </footer>
     
     <script>
@@ -1859,6 +1863,17 @@
                     card.style.display = 'none';
                 }
             });
+        });
+
+        // Visitor counter using CountAPI
+        window.addEventListener('load', function() {
+            // Replace 'sg-school-uniforms' with a unique namespace for your site
+            fetch('https://api.countapi.xyz/hit/sg-school-uniforms/visits')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('visits').textContent = data.value;
+                })
+                .catch(error => console.error('Error loading visitor count:', error));
         });
     </script>
 </body>
