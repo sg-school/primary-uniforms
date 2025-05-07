@@ -134,6 +134,12 @@ footer {
     font-size: 0.9rem;
 }
 
+.email-protect {
+    color: #0066cc;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .schools-container {
