@@ -1,0 +1,39 @@
+# Python files
+*.py
+*.pyc
+__pycache__/
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Log files
+*.log
+logs/
+log/
+
+# Data folder
+data/
+
+# Virtual Environment
+venv/
+ENV/
+
+# IDE folders
+.idea/
+.vscode/
+*.swp
+*.swo
