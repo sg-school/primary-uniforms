@@ -1849,32 +1849,6 @@
         </div>
     </footer>
     
-    <script>
-        // Simple search functionality
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            const searchTerm = this.value.toLowerCase();
-            const schoolCards = document.querySelectorAll('.school-card');
-            
-            schoolCards.forEach(card => {
-                const schoolName = card.querySelector('h2').textContent.toLowerCase();
-                if (schoolName.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-
-        // Visitor counter using CountAPI
-        window.addEventListener('load', function() {
-            // Replace 'sg-school-uniforms' with a unique namespace for your site
-            fetch('https://api.countapi.xyz/hit/sg-school-uniforms/visits')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('visits').textContent = data.value;
-                })
-                .catch(error => console.error('Error loading visitor count:', error));
-        });
-    </script>
+    
 </body>
 </html>
