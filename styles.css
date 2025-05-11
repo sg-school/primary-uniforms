@@ -139,7 +139,7 @@ footer {
 @media (max-width: 600px) {
     .school-card {
         width: 90%; /* Or a fixed width like 280px, adjust as needed */
-        margin: 10px auto; /* Center the cards */
+        margin: 10px 0; /* Center the cards */
     }
 }
 
