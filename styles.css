@@ -115,29 +115,12 @@ header h1 {
     background-color: #457b9d;
 }
 
-.visitor-counter {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 0.9em;
-}
-
-.visitor-counter span {
-    font-weight: bold;
-    color: #3a7bd5;
-}
-
 footer {
     text-align: center;
     margin-top: 30px;
     padding: 20px 0;
     color: #777;
     font-size: 0.9rem;
-}
-
-.email-protect {
-    color: #0066cc;
-    text-decoration: underline;
-    cursor: pointer;
 }
 
 /* Responsive adjustments */
