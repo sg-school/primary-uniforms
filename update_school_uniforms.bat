@@ -35,8 +35,8 @@ cls
 echo ==================================================
 echo          新加坡小学校服图片更新工具
 echo ==================================================
-echo 1. 验证和更新现有学校数据
-echo 2. 添加新学校并更新校服图片
+echo 1. 验证当前学校资料与图片完整性
+echo 2. 打开 schools.json 进行手动更新
 echo 3. 退出
 echo ==================================================
 
@@ -44,10 +44,13 @@ echo 请选择要执行的操作 (1-3):
 set /p choice=
 
 if %choice%==1 (
-echo 正在验证和更新现有学校数据...
-python scrape_school_uniforms.py
+echo 正在验证当前学校资料与图片...
+python -c "import json,os,sys; d=json.load(open('schools.json',encoding='utf-8')); missing=[s.get('uniformImage','') for s in d if not os.path.exists(s.get('uniformImage',''))]; print('学校总数:',len(d)); print('缺失图片:',len(missing)); [print(' -',m) for m in missing[:20]]; sys.exit(1 if missing else 0)"
 if %errorlevel% neq 0 (
-echo 处理过程中出现错误！
+echo 校验未通过，请检查 schools.json 或图片目录。
+pause
+) else (
+echo 校验通过：资料与图片路径完整。
 )
 pause
 cls
@@ -55,11 +58,8 @@ goto MENU
 )
 
 if %choice%==2 (
-echo 正在添加新学校并更新校服图片...
-python update_uniform_images.py
-if %errorlevel% neq 0 (
-echo 处理过程中出现错误！
-)
+echo 即将打开 schools.json，请手动更新资料后重新执行选项 1 进行校验...
+start "" notepad schools.json
 pause
 cls
 goto MENU
