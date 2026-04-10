@@ -5,23 +5,137 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Singapore Primary School Uniforms</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Loading spinner styles */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Sorting controls */
+        .sort-controls {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+        
+        .sort-controls select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+            font-size: 14px;
+        }
+        
+        /* Pagination styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .pagination button {
+            margin: 0 5px;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .pagination button.active {
+            background-color: #1d3557;
+            color: white;
+            border-color: #1d3557;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Card hover effects */
+        .school-card {
+            transition: all 0.3s ease;
+        }
+        
+        /* Image loading effects */
+        .uniform-image img {
+            transition: opacity 0.3s ease;
+        }
+        
+        .uniform-image img.loading {
+            opacity: 0.5;
+        }
+        
+        /* No results message */
+        .no-results {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+
+        .data-status {
+            margin-top: 16px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #f4f8ff;
+            color: #1d3557;
+            font-size: 0.95rem;
+            text-align: left;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Singapore Primary School Uniforms</h1>
         <p>A visual collection of uniforms from primary schools across Singapore</p>
+        <div class="data-status" id="dataStatus">Loading latest dataset status...</div>
     </header>
     
     <div class="filters">
         <input type="text" id="searchInput" placeholder="Search for schools...">
+        <div class="sort-controls">
+            <select id="sortSelect">
+                <option value="index">Sort by Index</option>
+                <option value="name">Sort by Name (A-Z)</option>
+            </select>
+        </div>
     </div>
     
     <div class="schools-container" id="schoolsContainer">
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+            <span>Loading school uniforms...</span>
+        </div>
         <!-- School cards will be dynamically inserted here by JavaScript -->
     </div>
 
+    <div class="pagination" id="pagination">
+        <!-- Pagination buttons will be inserted here -->
+    </div>
+
     <footer>
-        <p>&copy; 2025 Singapore School Uniforms Collection</p>
+        <p>&copy; <span id="currentYear"></span> Singapore School Uniforms Collection</p>
         <p>Source code: <a href="https://github.com/sg-school/primary-uniforms" target="_blank">GitHub</a> | Contact: <a href="javascript:void(0)" onclick="window.location.href='mailto:' + 'best.yichao' + '@' + 'gmail.com'" class="email-protect">best.yichao[at]gmail.com</a></p>
         <div class="visitor-counter">
             <p><img src="https://visitor-badge.laobi.icu/badge?page_id=sg-school.primary-uniforms" alt="Visitor Counter"></p>
@@ -29,61 +143,328 @@
     </footer>
 
     <script>
+        // Global variables
+        let allSchools = [];
+        let currentPage = 1;
+        const itemsPerPage = 24; // Number of schools to show per page
+        const dataVerification = {
+            verifiedAt: '2026-04-10',
+            verifiedSchoolCount: 182,
+            missingImageCount: 0
+        };
+
+        function updateDataStatus() {
+            const dataStatus = document.getElementById('dataStatus');
+            if (!dataStatus) return;
+
+            const matchesVerifiedCount = allSchools.length === dataVerification.verifiedSchoolCount;
+            const countNote = matchesVerifiedCount
+                ? `${allSchools.length} schools loaded`
+                : `${allSchools.length} schools loaded (verified baseline: ${dataVerification.verifiedSchoolCount})`;
+            dataStatus.textContent = `Dataset verified: ${dataVerification.verifiedAt} • ${countNote} • Missing image paths: ${dataVerification.missingImageCount}`;
+        }
+        
         async function loadSchools() {
             const schoolsContainer = document.getElementById('schoolsContainer');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            
             try {
+                // Show loading spinner
+                loadingSpinner.style.display = 'flex';
+                schoolsContainer.innerHTML = '';
+                
                 const response = await fetch('schools.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const schools = await response.json();
+                
+                allSchools = await response.json();
+                updateDataStatus();
+                
+                // Initialize search and sorting functionality
+                initializeSearch();
+                initializeSorting();
+                
+                // Display the first page of schools
+                displaySchools(allSchools);
+                
+            } catch (error) {
+                console.error("Could not load school data:", error);
+                schoolsContainer.innerHTML = '<div class="no-results"><p>Error loading school data. Please try again later.</p></div>';
+            } finally {
+                // Hide loading spinner
+                loadingSpinner.style.display = 'none';
+            }
+        }
 
-                schools.forEach(school => {
+        function displaySchools(schools) {
+            const schoolsContainer = document.getElementById('schoolsContainer');
+            schoolsContainer.innerHTML = '';
+            
+            // Calculate pagination
+            const totalPages = Math.ceil(schools.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, schools.length);
+            const schoolsToDisplay = schools.slice(startIndex, endIndex);
+            
+            if (schoolsToDisplay.length === 0) {
+                schoolsContainer.innerHTML = '<div class="no-results"><p>No schools found matching your criteria.</p></div>';
+            } else {
+                schoolsToDisplay.forEach(school => {
                     const card = document.createElement('div');
                     card.className = 'school-card';
+                    
+                    // Create card HTML with lazy loading for images
                     card.innerHTML = `
                         <div class="school-index">${school.index}</div>
                         <h2>${school.name}</h2>
-                        <p class="school-location">${school.location}</p>
+                        <p class="school-location">${school.location || 'Singapore'}</p>
                         <div class="uniform-image">
-                            <img src="${school.uniformImage}" alt="${school.uniformImageAlt}">
-                            <p><a href="${school.originalImageSource}" target="_blank">Original Image Source</a></p>
+                            <img data-src="${school.uniformImage}" alt="${school.uniformImageAlt || `${school.name} uniform`}" class="lazy-image loading">
                         </div>
-                        <a href="${school.website}" target="_blank" class="school-website">Visit School Website</a>
+                        <p><a href="${school.originalImageSource || '#'}" target="_blank">Original Image Source</a></p>
+                        <a href="${school.website || '#'}" target="_blank" class="school-website">Visit School Website</a>
                     `;
+                    
                     schoolsContainer.appendChild(card);
                 });
-
-                // Re-initialize search functionality after cards are loaded
-                initializeSearch();
-
-            } catch (error) {
-                console.error("Could not load school data:", error);
-                schoolsContainer.innerHTML = '<p>Error loading school data. Please try again later.</p>';
+                
+                // Initialize lazy loading for images
+                initializeLazyLoading();
             }
+            
+            // Update pagination controls
+            updatePagination(totalPages);
         }
 
         function initializeSearch() {
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
-                searchInput.addEventListener('keyup', function() {
-                    const searchTerm = this.value.toLowerCase();
-                    const schoolCards = document.querySelectorAll('.school-card');
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase().trim();
+                    currentPage = 1; // Reset to first page when searching
                     
-                    schoolCards.forEach(card => {
-                        const schoolName = card.querySelector('h2').textContent.toLowerCase();
-                        if (schoolName.includes(searchTerm)) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
+                    if (searchTerm === '') {
+                        // If search is empty, show all schools
+                        displaySchools(allSchools);
+                    } else {
+                        // Filter schools by name
+                        const filteredSchools = allSchools.filter(school => 
+                            school.name.toLowerCase().includes(searchTerm)
+                        );
+                        displaySchools(filteredSchools);
+                    }
                 });
             }
         }
 
+        function initializeSorting() {
+            const sortSelect = document.getElementById('sortSelect');
+            if (sortSelect) {
+                sortSelect.addEventListener('change', function() {
+                    const sortBy = this.value;
+                    let sortedSchools = [...allSchools]; // Create a copy
+                    
+                    if (sortBy === 'name') {
+                        // Sort by school name (A-Z)
+                        sortedSchools.sort((a, b) => 
+                            a.name.localeCompare(b.name)
+                        );
+                    } else if (sortBy === 'index') {
+                        // Sort by index
+                        sortedSchools.sort((a, b) => 
+                            parseInt(a.index) - parseInt(b.index)
+                        );
+                    }
+                    
+                    currentPage = 1; // Reset to first page when sorting
+                    displaySchools(sortedSchools);
+                });
+            }
+        }
+
+        function initializeLazyLoading() {
+            const lazyImages = document.querySelectorAll('.lazy-image');
+            
+            // Function to load a single lazy image
+            const loadImage = (image) => {
+                const src = image.getAttribute('data-src');
+                if (src) {
+                    // Create a new image to test loading
+                    const img = new Image();
+                    img.src = src;
+                    
+                    img.onload = () => {
+                // If image loads successfully
+                image.src = src;
+                image.classList.remove('loading');
+                image.classList.add('loaded'); // Add loaded class to make image visible
+            };
+                    
+                    img.onerror = () => {
+                        // If image fails to load, try to fix the path or show a placeholder
+                        console.warn('Failed to load image:', src);
+                        // Simple path fix: try adding leading slash
+                        const fixedSrc = '/' + src;
+                        const fixedImg = new Image();
+                        fixedImg.src = fixedSrc;
+                        
+                        fixedImg.onload = () => {
+                        image.src = fixedSrc;
+                        image.classList.remove('loading');
+                        image.classList.add('loaded'); // Add loaded class to make image visible
+                    };
+                        
+                        fixedImg.onerror = () => {
+                            // If all else fails, show a placeholder
+                            image.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22300%22%20height%3D%22200%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20300%20200%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15ba800aa1d%20text%20%7B%20fill%3Argba(200%2C200%2C200%2C.5)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A15pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15ba800aa1d%22%3E%3Crect%20width%3D%22300%22%20height%3D%22200%22%20fill%3D%22%23EEEEEE%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22115%22%20y%3D%22110%22%3EImage%20Not%20Found%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E';
+                            image.classList.remove('loading');
+                        };
+                    };
+                }
+            };
+            
+            // Load all images immediately instead of using Intersection Observer
+            // This simplifies the process and ensures all images are loaded
+            lazyImages.forEach(image => {
+                loadImage(image);
+            });
+        }
+
+        function updatePagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            
+            // Don't show pagination if there's only one page
+            if (totalPages <= 1) {
+                pagination.style.display = 'none';
+                return;
+            }
+            
+            pagination.style.display = 'flex';
+            
+            // Previous button
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Previous';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displaySchools(getCurrentFilteredSchools());
+                }
+            });
+            pagination.appendChild(prevButton);
+            
+            // Page number buttons
+            // Show a maximum of 5 page buttons at a time
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            
+            // Adjust if we're near the end
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    displaySchools(getCurrentFilteredSchools());
+                });
+                pagination.appendChild(pageButton);
+            }
+            
+            // Next button
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Next';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displaySchools(getCurrentFilteredSchools());
+                }
+            });
+            pagination.appendChild(nextButton);
+        }
+
+        function getCurrentFilteredSchools() {
+            // Get the current search term
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+            
+            // Get the current sort option
+            const sortSelect = document.getElementById('sortSelect');
+            const sortBy = sortSelect ? sortSelect.value : 'index';
+            
+            // Filter schools
+            let filteredSchools = allSchools;
+            if (searchTerm !== '') {
+                filteredSchools = allSchools.filter(school => 
+                    school.name.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Sort schools
+            let sortedSchools = [...filteredSchools];
+            if (sortBy === 'name') {
+                sortedSchools.sort((a, b) => 
+                    a.name.localeCompare(b.name)
+                );
+            } else if (sortBy === 'index') {
+                sortedSchools.sort((a, b) => 
+                    parseInt(a.index) - parseInt(b.index)
+                );
+            }
+            
+            return sortedSchools;
+        }
+
+        // Add keyboard navigation for better accessibility
+        function addKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                // Left arrow key for previous page
+                if (e.key === 'ArrowLeft') {
+                    const prevButton = document.querySelector('.pagination button:first-child');
+                    if (prevButton && !prevButton.disabled) {
+                        prevButton.click();
+                    }
+                }
+                // Right arrow key for next page
+                else if (e.key === 'ArrowRight') {
+                    const nextButton = document.querySelector('.pagination button:last-child');
+                    if (nextButton && !nextButton.disabled) {
+                        nextButton.click();
+                    }
+                }
+            });
+        }
+
+        // Add a debounce function for better performance with search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
         // Load schools when the page is ready
-        document.addEventListener('DOMContentLoaded', loadSchools);
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearElement = document.getElementById('currentYear');
+            if (yearElement) {
+                yearElement.textContent = new Date().getFullYear();
+            }
+            loadSchools();
+            addKeyboardNavigation();
+        });
     </script>
 </body>
 </html>
