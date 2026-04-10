@@ -5,6 +5,7 @@ A visual collection of uniforms from primary schools across Singapore.
 ## Current Status (Updated: 2026-04-10)
 
 - Schools in dataset: **182**
+- School locations re-verified: **180 / 182**
 - Uniform images referenced by dataset: **182**
 - Missing image references: **0** (all dataset image paths resolve to local files)
 
