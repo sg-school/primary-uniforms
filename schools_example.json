@@ -1,0 +1,30 @@
+[
+    {
+        "index": 1,
+        "name": "Admiralty Primary School",
+        "location": "Singapore",
+        "uniformImage": "school_uniforms/admiralty_primary_school_uniform.jpg",
+        "uniformImageAlt": "Admiralty Primary School uniform",
+        "originalImageSource": "https://admiraltypri.moe.edu.sg/images/AdmiraltyCrest.png",
+        "website": "https://admiraltypri.moe.edu.sg/"
+    },
+    {
+        "index": 2,
+        "name": "Ai Tong School",
+        "location": "Singapore",
+        "uniformImage": "school_uniforms/ai_tong_school_uniform.jpg",
+        "uniformImageAlt": "Ai Tong School uniform",
+        "originalImageSource": "http://www.aitong.moe.edu.sg/images/aitong-askgov (1).png",
+        "website": "http://www.aitong.moe.edu.sg"
+    },
+    
+    {
+        "index": 85,
+        "name": "Zhonghua Primary School",
+        "location": "Singapore",
+        "uniformImage": "school_uniforms/zhonghua_primary_school_uniform.jpg",
+        "uniformImageAlt": "Zhonghua Primary School uniform",
+        "originalImageSource": "http://www.zhonghuapri.moe.edu.sg/images/zps official school crest.jpg",
+        "website": "http://www.zhonghuapri.moe.edu.sg"
+    }
+]
