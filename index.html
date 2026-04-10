@@ -158,7 +158,7 @@
             if (!dataStatus) return;
 
             const matchesVerifiedCount = allSchools.length === dataVerification.verifiedSchoolCount;
-            const pendingLocationVerificationCount = allSchools.filter(school => !school.location).length;
+            const pendingLocationVerificationCount = allSchools.filter(school => school.location === null).length;
             const verifiedLocationCount = allSchools.length - pendingLocationVerificationCount;
             const countNote = matchesVerifiedCount
                 ? `${allSchools.length} schools loaded`
