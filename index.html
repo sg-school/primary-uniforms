@@ -150,6 +150,8 @@
         const dataVerification = {
             verifiedAt: '2026-04-10',
             verifiedSchoolCount: 182,
+            verifiedLocationCount: 180,
+            pendingLocationVerificationCount: 2,
             missingImageCount: 0
         };
 
@@ -161,7 +163,7 @@
             const countNote = matchesVerifiedCount
                 ? `${allSchools.length} schools loaded`
                 : `${allSchools.length} schools loaded (verified baseline: ${dataVerification.verifiedSchoolCount})`;
-            dataStatus.textContent = `Dataset verified: ${dataVerification.verifiedAt} • ${countNote} • Missing image paths: ${dataVerification.missingImageCount}`;
+            dataStatus.textContent = `Dataset verified: ${dataVerification.verifiedAt} • ${countNote} • School info reverified: ${dataVerification.verifiedLocationCount}/${dataVerification.verifiedSchoolCount} • Pending location checks: ${dataVerification.pendingLocationVerificationCount} • Missing image paths: ${dataVerification.missingImageCount}`;
         }
         
         async function loadSchools() {
@@ -218,7 +220,7 @@
                     card.innerHTML = `
                         <div class="school-index">${school.index}</div>
                         <h2>${school.name}</h2>
-                        <p class="school-location">${school.location || 'Singapore'}</p>
+                        <p class="school-location">${school.location || 'Location pending verification'}</p>
                         <div class="uniform-image">
                             <img data-src="${school.uniformImage}" alt="${school.uniformImageAlt || `${school.name} uniform`}" class="lazy-image loading">
                         </div>

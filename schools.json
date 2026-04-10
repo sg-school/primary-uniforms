@@ -83,7 +83,7 @@
     {
         "index": 10,
         "name": "Angsana Primary School",
-        "location": "51 Tampines Street 61, Singapore 528565, Website, www.angsanapri.moe.edu.sg",
+        "location": "3 Tampines Street 22, Singapore 529366",
         "uniformImage": "school_uniforms/angsana_primary_school_uniform.jpg",
         "uniformImageAlt": "Angsana Primary School uniform",
         "originalImageSource": "https://live.staticflickr.com/1890/29729283607_73a23b5f65_b.jpg",
@@ -254,7 +254,7 @@
     {
         "index": 29,
         "name": "Chij (Katong) Primary",
-        "location": "17 Martia Road, Singpore 424821",
+        "location": "17 Martia Road, Singapore 424821",
         "uniformImage": "school_uniforms/chij_katong_primary_uniform.jpg",
         "uniformImageAlt": "Chij (Katong) Primary uniform",
         "originalImageSource": "https://media.karousell.com/media/photos/products/2021/12/30/chij_katong_primary_uniform_1640822970_3614e873_progressive.jpg",
@@ -389,7 +389,7 @@
     {
         "index": 44,
         "name": "Da Qiao Primary School",
-        "location": "8 ANG MO KIO STREET 54 Singapore",
+        "location": "8 Ang Mo Kio Street 54, Singapore 569185",
         "uniformImage": "school_uniforms/da_qiao_primary_school_uniform.jpg",
         "uniformImageAlt": "Da Qiao Primary School uniform",
         "originalImageSource": "https://moehc.moe.edu.sg/images/daqiaopri7.jpg",
@@ -416,7 +416,7 @@
     {
         "index": 47,
         "name": "De La Salle School",
-        "location": "11 Choa Chu Kang Street 52 Singapore",
+        "location": "11 Choa Chu Kang Street 52, Singapore 689285",
         "uniformImage": "school_uniforms/de_la_salle_school_uniform.jpg",
         "uniformImageAlt": "De La Salle School uniform",
         "originalImageSource": "https://www.kindpng.com/picc/m/24-249165_banner01-de-la-salle-singapore-uniform-hd-png.png",
@@ -443,7 +443,7 @@
     {
         "index": 50,
         "name": "East View Primary School",
-        "location": "4 TAMPINES STREET 91 Singapore",
+        "location": "4 Tampines Street 91, Singapore 528907",
         "uniformImage": "school_uniforms/east_view_primary_school_uniform.jpg",
         "uniformImageAlt": "East View Primary School uniform",
         "originalImageSource": "https://i.pinimg.com/originals/35/14/ea/3514ea1e509b40fc025016335678d270.jpg",
@@ -749,7 +749,7 @@
     {
         "index": 84,
         "name": "Kheng Cheng School",
-        "location": "15 Lorong 3 Toa Payoh 319580 Singapore",
+        "location": "15 Lorong 3 Toa Payoh, Singapore 319580",
         "uniformImage": "school_uniforms/kheng_cheng_school_uniform.jpg",
         "uniformImageAlt": "Kheng Cheng School uniform",
         "originalImageSource": "https://media.karousell.com/media/photos/products/2021/10/25/kheng_cheng_school_uniform_1635158196_20d4ceee_progressive.jpg",
@@ -812,7 +812,7 @@
     {
         "index": 91,
         "name": "MacPherson Primary School",
-        "location": "2 MATTAR ROADSingapore",
+        "location": "2 Mattar Road, Singapore 387724",
         "uniformImage": "school_uniforms/macpherson_primary_school_uniform.jpg",
         "uniformImageAlt": "MacPherson Primary School uniform",
         "originalImageSource": "https://4.bp.blogspot.com/_mFZ3OI85lEE/SPlJXdZj30I/AAAAAAAAAKQ/RaQq639YNCE/s400/DSC02036.JPG",
@@ -893,7 +893,7 @@
     {
         "index": 100,
         "name": "Nan Hua Primary School",
-        "location": "30 JALAN LEMPENGSingapore",
+        "location": "30 Jalan Lempeng, Singapore 128806",
         "uniformImage": "school_uniforms/nan_hua_primary_school_uniform.jpg",
         "uniformImageAlt": "Nan Hua Primary School uniform",
         "originalImageSource": "https://media.karousell.com/media/photos/products/2020/10/15/nan_hua_primary_school_boy_uni_1602774539_e8007962.jpg",
@@ -1028,7 +1028,7 @@
     {
         "index": 115,
         "name": "Pei Chun Public School",
-        "location": "16 TOA PAYOH LORONG 7 Singapore",
+        "location": "16 Lorong 7 Toa Payoh, Singapore 319320",
         "uniformImage": "school_uniforms/pei_chun_public_school_uniform.jpg",
         "uniformImageAlt": "Pei Chun Public School uniform",
         "originalImageSource": "https://media.karousell.com/media/photos/products/2023/4/3/pei_chun_public_school_uniform_1680487081_2acf3b52_progressive.jpg",
@@ -1325,7 +1325,7 @@
     {
         "index": 148,
         "name": "Stamford Primary School",
-        "location": "1 VICTORIA LANESingapore",
+        "location": "1 Victoria Lane, Singapore 198423",
         "uniformImage": "school_uniforms/stamford_primary_school_uniform.jpg",
         "uniformImageAlt": "Stamford Primary School uniform",
         "originalImageSource": "http://4.bp.blogspot.com/-1PmhQeaFThA/UFWbYN4aySI/AAAAAAAABcA/Nf510qNSeFY/s1600/IMG_1002.JPG",
@@ -1415,7 +1415,7 @@
     {
         "index": 158,
         "name": "Unity Primary School",
-        "location": "21 Choa Chu Kang Crescent, S688268",
+        "location": "21 Choa Chu Kang Crescent, Singapore 688268",
         "uniformImage": "school_uniforms/unity_primary_school_uniform.jpg",
         "uniformImageAlt": "Unity Primary School uniform",
         "originalImageSource": "https://media.karousell.com/media/photos/products/2020/9/28/bnip_unity_primary_school_pe_t_1601334760_667cec32_progressive.jpg",
@@ -1514,7 +1514,7 @@
     {
         "index": 169,
         "name": "Woodlands Ring Primary School",
-        "location": "11 Woodlands Ring Road, Singapore 738240, Tel : 63643679",
+        "location": "11 Woodlands Ring Road, Singapore 738240",
         "uniformImage": "school_uniforms/woodlands_ring_primary_school_uniform.jpg",
         "uniformImageAlt": "Woodlands Ring Primary School uniform",
         "originalImageSource": "https://4.bp.blogspot.com/-CFpGnDfunXs/WG_ZCPKdrZI/AAAAAAAAhdw/BUJ8-E5aiAY2_Rr4JsNGVbte3raMj3BrACLcB/s400/Screen%2BShot%2B2017-01-07%2Bat%2B1.47.50%2BAM.png",
@@ -1595,7 +1595,7 @@
     {
         "index": 178,
         "name": "Yu Neng Primary School",
-        "location": "56 BEDOK NORTH ST 3 Singapore",
+        "location": "56 Bedok North Street 3, Singapore 469623",
         "uniformImage": "school_uniforms/yu_neng_primary_school_uniform.jpg",
         "uniformImageAlt": "Yu Neng Primary School uniform",
         "originalImageSource": "https://jeepsinguniform.com/cdn/shop/files/12_1_600x.jpg?v=1705476636",
